@@ -30,6 +30,11 @@ class RandomDie {
   }
 }
 
+function loggingMiddleware(req, res, next) {
+  console.log('ip:', req.ip)
+  next()
+}
+
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
   type RandomDie {
@@ -53,6 +58,7 @@ var schema = buildSchema(`
     getDie(numSides: Int): RandomDie
     getMessage(id: ID!): Message
     getMessages: [Message]
+    ip: String
   }
 
   type Mutation {
@@ -102,6 +108,9 @@ var root = {
     // This replaces all old data, but some apps might want partial update.
     fakeDatabase[id] = input
     return new Message(id, input)
+  },
+  ip: function (args, request) {
+    return request.ip;
   },
 }
 
