@@ -52,6 +52,7 @@ var schema = buildSchema(`
   type Query {
     getDie(numSides: Int): RandomDie
     getMessage(id: ID!): Message
+    getMessages: [Message]
   }
 
   type Mutation {
@@ -72,28 +73,35 @@ var root = {
     return Math.random()
   },
   getDie: function ({numSides}) {
-    return new RandomDie(numSides || 6);
+    return new RandomDie(numSides || 6)
   },
   getMessage: function ({id}) {
     if (!fakeDatabase[id]) {
       throw new Error('no message exists with id ' + id);
     }
-    return new Message(id, fakeDatabase[id]);
+    return new Message(id, fakeDatabase[id])
+  },
+  getMessages: () => {
+    messages = []
+    for (let key in fakeDatabase) {
+      messages.push(new Message(key, fakeDatabase[key]))
+    }
+    return messages
   },
   createMessage: function ({input}) {
     // Create a random id for our "database".
-    var id = require('crypto').randomBytes(10).toString('hex');
+    var id = require('crypto').randomBytes(10).toString('hex')
 
     fakeDatabase[id] = input;
-    return new Message(id, input);
+    return new Message(id, input)
   },
   updateMessage: function ({id, input}) {
     if (!fakeDatabase[id]) {
-      throw new Error('no message exists with id ' + id);
+      throw new Error('no message exists with id ' + id)
     }
     // This replaces all old data, but some apps might want partial update.
-    fakeDatabase[id] = input;
-    return new Message(id, input);
+    fakeDatabase[id] = input
+    return new Message(id, input)
   },
 }
 
