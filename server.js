@@ -19,7 +19,7 @@ var root = {
   random: () => {
     return Math.random();
   },
-  rollDice: function ({numDice, numSides}) {
+  rollDice: ({numDice, numSides}) => {
     var output = [];
     for (var i = 0; i < numDice; i++) {
       output.push(1 + Math.floor(Math.random() * (numSides || 6)));
