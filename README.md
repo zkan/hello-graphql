@@ -1,5 +1,3 @@
 # Hello, GraphQL
 
-```
-node_modules/.bin/babel-node index.js --presets "es2015"
-```
+Getting Started With GraphQL.js - http://graphql.org/graphql-js/
